@@ -1,12 +1,13 @@
 class ContactsController < ApplicationController
 
 	def new
-		@contact = Contact.new
+      @contact = Contact.new
 	end
 
 	def create
 		@contact = Contact.new(secure_params)
 		if @contact.valid?
+		@contact.update_spreadsheet
 		  # TODO save data
 		  # TODO send message
 		 flash[:notice] = "Message sent from #{@contact.name}."
@@ -14,13 +15,12 @@ class ContactsController < ApplicationController
 	   else
 		render :new
 	end
-end
+ end
 
-private
+ private
 
-def secure_params
+ def secure_params
 	params.require(:contact).permit(:name, :email, :content)
-end
-
+ end
 
 end
